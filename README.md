@@ -54,21 +54,21 @@ export ARK_API_KEY=your-ark-api-key
 
 ## Models
 
-This extension follows the [Ark Plan model list](https://www.volcengine.com/docs/82379/1925114?lang=zh) and registers:
+This extension follows the [Ark Plan model list](https://www.volcengine.com/docs/82379/2366394?lang=zh) and registers:
 
 - `ark-code-latest`
-- `doubao-seed-2.0-code`
-- `doubao-seed-2.0-pro`
-- `doubao-seed-2.0-lite`
-- `doubao-seed-code`
-- `minimax-m2.7`
-- `minimax-m3`
-- `glm-5.2`
-- `glm-latest`
+- `doubao-seed-evolving`
+- `doubao-seed-2-0-mini`
+- `doubao-seed-2-0-lite`
+- `doubao-seed-2-1-turbo`
 - `deepseek-v4-flash`
 - `deepseek-v4-pro`
+- `glm-5-2`
+- `glm-latest`
 - `kimi-k2.6`
 - `kimi-k2.7-code`
+- `minimax-m2.7`
+- `minimax-m3`
 
 Run `omp --list-models` after installing to confirm the provider is loaded.
 
