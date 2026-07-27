@@ -1,60 +1,60 @@
-# pi-volcengine-provider
+# omp-ark-provider
 
-Pi package that registers a Volcengine Ark Coding API provider.
+OMP package that registers a Ark Agent Plan API provider.
 
 ## Install
 
-npm package: [pi-volcengine-provider](https://www.npmjs.com/package/pi-volcengine-provider)
+npm package: [omp-ark-provider](https://www.npmjs.com/package/omp-ark-provider)
 
 Recommended install from npm:
 
 ```bash
-pi install npm:pi-volcengine-provider
+omp install npm:omp-ark-provider
 ```
 
 To pin a specific npm version:
 
 ```bash
-pi install npm:pi-volcengine-provider@0.1.2
+omp install npm:omp-ark-provider@0.1.2
 ```
 
 You can also install from GitHub:
 
 ```bash
-pi install git:github.com/MacroSony/pi-volcengine-provider
+omp install git:github.com/MacroSony/omp-ark-provider
 ```
 
 For local development:
 
 ```bash
-pi -e /path/to/pi-volcengine-provider
+omp -e /path/to/omp-ark-provider
 ```
 
 To try the published package for one run without installing it:
 
 ```bash
-pi -e npm:pi-volcengine-provider
+omp -e npm:omp-ark-provider
 ```
 
 ## Authentication
 
-The provider id is `volcengine-plan`. Pi will use `~/.pi/agent/auth.json` first, then the `VOLCENGINE_API_KEY` environment variable as a fallback.
+The provider id is `ark-plan`. OMP will use `~/.omp/agent/auth.json` first, then the `ARK_API_KEY` environment variable as a fallback.
 
 ```json
 {
-  "volcengine-plan": { "type": "api_key", "key": "your-volcengine-key" }
+  "ark-plan": { "type": "api_key", "key": "your-ark-api-key" }
 }
 ```
 
 Or:
 
 ```bash
-export VOLCENGINE_API_KEY=your-volcengine-key
+export ARK_API_KEY=your-ark-api-key
 ```
 
 ## Models
 
-This extension follows the [Volcengine Coding Plan model list](https://www.volcengine.com/docs/82379/1925114?lang=zh) and registers:
+This extension follows the [Ark Plan model list](https://www.volcengine.com/docs/82379/1925114?lang=zh) and registers:
 
 - `ark-code-latest`
 - `doubao-seed-2.0-code`
@@ -70,14 +70,14 @@ This extension follows the [Volcengine Coding Plan model list](https://www.volce
 - `kimi-k2.6`
 - `kimi-k2.7-code`
 
-Run `pi --list-models` after installing to confirm the provider is loaded.
+Run `omp --list-models` after installing to confirm the provider is loaded.
 
 ## Thinking levels
 
-This extension maps Pi's native thinking selector to provider-specific Chat Completions controls:
+This extension maps OMP's native thinking selector to provider-specific Chat Completions controls:
 
-- Pi `off` -> `thinking: { "type": "disabled" }`
-- Most Volcengine reasoning models: Pi `low`, `medium`, `high` -> `thinking: { "type": "enabled" }` plus matching `reasoning_effort`
-- Pi `minimal` is hidden because Volcengine's `reasoning_effort: "minimal"` means no thinking; selecting it clamps to `low`
-- Pi `xhigh` -> `reasoning_effort: "max"` only for models verified to accept it (`ark-code-latest`, `deepseek-v4-flash`, `deepseek-v4-pro`)
-- `glm-5.2` and `glm-latest` use the GLM/Z.AI thinking shape: Pi `low`, `medium`, and `high` send `thinking: { "type": "enabled" }` without `reasoning_effort`; Pi `off` sends disabled.
+- OMP `off` -> `thinking: { "type": "disabled" }`
+- Most Ark reasoning models: OMP `low`, `medium`, `high` -> `thinking: { "type": "enabled" }` plus matching `reasoning_effort`
+- OMP `minimal` is hidden because Ark's `reasoning_effort: "minimal"` means no thinking; selecting it clamps to `low`
+- OMP `xhigh` -> `reasoning_effort: "max"` only for models verified to accept it (`ark-code-latest`, `deepseek-v4-flash`, `deepseek-v4-pro`)
+- `glm-5.2` and `glm-latest` use the GLM/Z.AI thinking shape: OMP `low`, `medium`, and `high` send `thinking: { "type": "enabled" }` without `reasoning_effort`; OMP `off` sends disabled.

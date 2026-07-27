@@ -1,34 +1,32 @@
 {
-  "name": "pi-volcengine-provider",
+  "name": "omp-ark-provider",
   "version": "0.1.2",
-  "description": "Pi provider extension for Volcengine Ark Coding API models.",
+  "description": "OMP provider extension for Ark Agent Plan API.",
   "type": "module",
   "license": "MIT",
   "keywords": [
-    "pi-package",
-    "pi-extension",
+    "omp-package",
+    "omp-provider",
     "volcengine",
     "ark",
-    "doubao"
+    "plan"
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/MacroSony/pi-volcengine-provider.git"
+    "url": "git+ssh://git@github.com/MacroSony/omp-ark-provider.git"
   },
   "files": [
-    "index.ts",
+    "dist",
     "README.md",
-    "LICENSE",
-    "tsconfig.json"
+    "LICENSE"
   ],
-  "pi": {
+  "omp": {
     "extensions": [
-      "./index.ts"
+      "./dist/index.js"
     ]
   },
   "scripts": {
-    "clean": "echo 'nothing to clean'",
-    "build": "echo 'nothing to build'",
+    "build": "esbuild index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:@earendil-works/pi-ai --external:@earendil-works/pi-coding-agent",
     "check": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
@@ -43,6 +41,7 @@
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "0.79.2",
     "@types/node": "24.12.4",
+    "esbuild": "^0.28.1",
     "typescript": "5.9.3"
   },
   "engines": {

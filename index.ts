@@ -1,27 +1,29 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-export const PROVIDER_ID = "volcengine-plan";
-export const PROVIDER_NAME = "Volcengine Coding Plan";
-export const VOLCENGINE_CODING_BASE_URL = "https://ark.cn-beijing.volces.com/api/coding/v3";
+const ARK_API_KEY = process.env.ARK_API_KEY || process.env.VOLCENGINE_API_KEY || "";
+
+export const PROVIDER_ID = "ark-plan";
+export const PROVIDER_NAME = "Ark Plan";
+export const ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/plan/v3";
 
 type ModelInput = ("text" | "image")[];
-type PiThinkingLevel = "off" | "minimal" | "low" | "medium" | "high" | "xhigh";
-type VolcengineOpenAICompat = {
+type OmpThinkingLevel = "off" | "minimal" | "low" | "medium" | "high" | "xhigh";
+type ArkOpenAICompat = {
   supportsDeveloperRole?: boolean;
   supportsReasoningEffort?: boolean;
   maxTokensField?: "max_completion_tokens" | "max_tokens";
   thinkingFormat?: "deepseek" | "zai";
 };
 
-interface VolcengineModelDefinition {
+interface ArkModelDefinition {
   id: string;
   name: string;
   input: ModelInput;
   contextWindow: number;
   maxTokens: number;
   reasoning: boolean;
-  thinkingLevelMap?: Partial<Record<PiThinkingLevel, string | null>>;
-  compat?: VolcengineOpenAICompat;
+  thinkingLevelMap?: Partial<Record<OmpThinkingLevel, string | null>>;
+  compat?: ArkOpenAICompat;
 }
 
 const TEXT_ONLY: ModelInput = ["text"];
@@ -32,7 +34,7 @@ const OPENAI_COMPAT = {
   maxTokensField: "max_tokens" as const,
 };
 
-const VOLCENGINE_THINKING_COMPAT = {
+const ARK_THINKING_COMPAT = {
   supportsDeveloperRole: false,
   supportsReasoningEffort: true,
   maxTokensField: "max_tokens" as const,
@@ -45,16 +47,16 @@ const ZAI_THINKING_COMPAT = {
   thinkingFormat: "zai" as const,
 };
 
-// Volcengine uses `minimal` to mean "no thinking". Pi already has a separate
-// `off` level, so hide Pi's `minimal` and clamp it up to `low`.
-const VOLCENGINE_THINKING_LEVEL_MAP = {
+// Ark uses `minimal` to mean "no thinking". OMP already has a separate
+// `off` level, so hide OMP's `minimal` and clamp it up to `low`.
+const ARK_THINKING_LEVEL_MAP = {
   minimal: null,
-} satisfies Partial<Record<PiThinkingLevel, string | null>>;
+} satisfies Partial<Record<OmpThinkingLevel, string | null>>;
 
-const VOLCENGINE_MAX_THINKING_LEVEL_MAP = {
-  ...VOLCENGINE_THINKING_LEVEL_MAP,
+const ARK_MAX_THINKING_LEVEL_MAP = {
+  ...ARK_THINKING_LEVEL_MAP,
   xhigh: "max",
-} satisfies Partial<Record<PiThinkingLevel, string | null>>;
+} satisfies Partial<Record<OmpThinkingLevel, string | null>>;
 
 const ZERO_COST = {
   input: 0,
@@ -63,7 +65,7 @@ const ZERO_COST = {
   cacheWrite: 0,
 };
 
-export const MODELS: VolcengineModelDefinition[] = [
+export const MODELS: ArkModelDefinition[] = [
   {
     id: "ark-code-latest",
     name: "ark-code-latest",
@@ -71,7 +73,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 32000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_MAX_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_MAX_THINKING_LEVEL_MAP,
   },
   {
     id: "doubao-seed-2.0-code",
@@ -80,7 +82,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 65536,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "doubao-seed-2.0-pro",
@@ -89,7 +91,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 65536,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "doubao-seed-2.0-lite",
@@ -98,7 +100,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 65536,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "doubao-seed-code",
@@ -107,7 +109,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 32000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "minimax-m2.7",
@@ -116,7 +118,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 200000,
     maxTokens: 128000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "minimax-m3",
@@ -125,7 +127,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 512000,
     maxTokens: 128000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "glm-5.2",
@@ -134,7 +136,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 1024000,
     maxTokens: 128000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
     compat: ZAI_THINKING_COMPAT,
   },
   {
@@ -144,7 +146,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 1024000,
     maxTokens: 128000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
     compat: ZAI_THINKING_COMPAT,
   },
   {
@@ -154,7 +156,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 1024000,
     maxTokens: 384000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_MAX_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_MAX_THINKING_LEVEL_MAP,
   },
   {
     id: "deepseek-v4-pro",
@@ -163,7 +165,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 1024000,
     maxTokens: 384000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_MAX_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_MAX_THINKING_LEVEL_MAP,
   },
   {
     id: "kimi-k2.6",
@@ -172,7 +174,7 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 32000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
   {
     id: "kimi-k2.7-code",
@@ -181,22 +183,22 @@ export const MODELS: VolcengineModelDefinition[] = [
     contextWindow: 256000,
     maxTokens: 32000,
     reasoning: true,
-    thinkingLevelMap: VOLCENGINE_THINKING_LEVEL_MAP,
+    thinkingLevelMap: ARK_THINKING_LEVEL_MAP,
   },
 ];
 
-export default function volcengineProvider(pi: ExtensionAPI) {
-  pi.registerProvider(PROVIDER_ID, {
+export default function arkProvider(ext: ExtensionAPI) {
+  ext.registerProvider(PROVIDER_ID, {
     name: PROVIDER_NAME,
-    baseUrl: VOLCENGINE_CODING_BASE_URL,
-    apiKey: "$VOLCENGINE_API_KEY",
+    baseUrl: ARK_BASE_URL,
+    apiKey: ARK_API_KEY,
     api: "openai-completions",
     models: MODELS.map((model) => ({
       ...model,
       input: [...model.input],
       cost: { ...ZERO_COST },
       ...(model.thinkingLevelMap ? { thinkingLevelMap: { ...model.thinkingLevelMap } } : {}),
-      compat: { ...(model.compat ?? (model.reasoning ? VOLCENGINE_THINKING_COMPAT : OPENAI_COMPAT)) },
+      compat: { ...(model.compat ?? (model.reasoning ? ARK_THINKING_COMPAT : OPENAI_COMPAT)) },
     })),
   });
 }
